@@ -1,0 +1,11 @@
+package ga
+
+class Abscence {
+	String typeAbscence
+	static  belongsTo = [matiere:Matiere,etudiant:Etudiant]
+	static constraints = {
+
+		typeAbscence(nullable: true)
+	}
+}
+
