@@ -1,0 +1,15 @@
+package ga
+
+class Groupe {
+
+	String nomGroupe
+	
+		static belongsTo = [niveau:Niveau]
+		static hasMany=[etudiants:Etudiant]
+	
+	
+		static constraints = { 
+			nomGroupe(blank: true) }
+	}
+	
+
