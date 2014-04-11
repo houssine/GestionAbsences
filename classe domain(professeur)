@@ -1,0 +1,17 @@
+package ga
+
+import Abdououfae.testapp.User
+
+class Professeur extends User {
+
+	static belongsTo = [Etudiant, Matiere]
+	static hasMany=[etudiants:Etudiant, matieres:Matiere]
+
+
+
+	static constraints = {
+		
+		
+	}
+
+}
