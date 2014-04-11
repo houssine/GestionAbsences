@@ -1,0 +1,12 @@
+package ga
+
+class Seance {
+
+	String nomSeance
+	
+		static belongsTo = [date:Date,matiere:Matiere]
+	
+		static constraints = { 
+			nomSeance(nullable: true) 
+			}
+}
