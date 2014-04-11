@@ -1,0 +1,14 @@
+package ga
+
+class Date {
+
+Date date
+	static hasMany = [seances:Seance]
+
+
+	static constraints = {
+		date (blank:false)
+}
+	}
+	
+
