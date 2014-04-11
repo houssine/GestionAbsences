@@ -1,0 +1,102 @@
+package ga
+
+import org.springframework.dao.DataIntegrityViolationException
+
+class AdministrateurController {
+
+    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+
+    def index() {
+        redirect(action: "list", params: params)
+    }
+
+    def list(Integer max) {
+        params.max = Math.min(max ?: 10, 100)
+        [administrateurInstanceList: Administrateur.list(params), administrateurInstanceTotal: Administrateur.count()]
+    }
+
+    def create() {
+        [administrateurInstance: new Administrateur(params)]
+    }
+
+    def save() {
+        def administrateurInstance = new Administrateur(params)
+        if (!administrateurInstance.save(flush: true)) {
+            render(view: "create", model: [administrateurInstance: administrateurInstance])
+            return
+        }
+
+        flash.message = message(code: 'default.created.message', args: [message(code: 'administrateur.label', default: 'Administrateur'), administrateurInstance.id])
+        redirect(action: "show", id: administrateurInstance.id)
+    }
+
+    def show(Long id) {
+        def administrateurInstance = Administrateur.get(id)
+        if (!administrateurInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'administrateur.label', default: 'Administrateur'), id])
+            redirect(action: "list")
+            return
+        }
+
+        [administrateurInstance: administrateurInstance]
+    }
+
+    def edit(Long id) {
+        def administrateurInstance = Administrateur.get(id)
+        if (!administrateurInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'administrateur.label', default: 'Administrateur'), id])
+            redirect(action: "list")
+            return
+        }
+
+        [administrateurInstance: administrateurInstance]
+    }
+
+    def update(Long id, Long version) {
+        def administrateurInstance = Administrateur.get(id)
+        if (!administrateurInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'administrateur.label', default: 'Administrateur'), id])
+            redirect(action: "list")
+            return
+        }
+
+        if (version != null) {
+            if (administrateurInstance.version > version) {
+                administrateurInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
+                          [message(code: 'administrateur.label', default: 'Administrateur')] as Object[],
+                          "Another user has updated this Administrateur while you were editing")
+                render(view: "edit", model: [administrateurInstance: administrateurInstance])
+                return
+            }
+        }
+
+        administrateurInstance.properties = params
+
+        if (!administrateurInstance.save(flush: true)) {
+            render(view: "edit", model: [administrateurInstance: administrateurInstance])
+            return
+        }
+
+        flash.message = message(code: 'default.updated.message', args: [message(code: 'administrateur.label', default: 'Administrateur'), administrateurInstance.id])
+        redirect(action: "show", id: administrateurInstance.id)
+    }
+
+    def delete(Long id) {
+        def administrateurInstance = Administrateur.get(id)
+        if (!administrateurInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'administrateur.label', default: 'Administrateur'), id])
+            redirect(action: "list")
+            return
+        }
+
+        try {
+            administrateurInstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'administrateur.label', default: 'Administrateur'), id])
+            redirect(action: "list")
+        }
+        catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'administrateur.label', default: 'Administrateur'), id])
+            redirect(action: "show", id: id)
+        }
+    }
+}
