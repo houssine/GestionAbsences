@@ -1,0 +1,16 @@
+package ga
+
+class Matiere {
+
+	String nomMatiere
+	
+	static hasMany = [abscences:Abscence,professeurs:Professeur,seances:Seance]
+	static belongsTo=[niveau:Niveau]
+
+
+
+	static constraints = { 
+		nomMatiere(blank: true)
+		
+	}
+}
