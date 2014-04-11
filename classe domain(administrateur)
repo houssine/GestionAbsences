@@ -1,0 +1,9 @@
+package ga
+
+import Abdououfae.testapp.User
+
+class Administrateur extends User {
+
+    static constraints = {
+    }
+}
