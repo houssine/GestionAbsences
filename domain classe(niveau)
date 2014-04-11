@@ -1,0 +1,11 @@
+package ga
+
+class Niveau {
+	static hasMany = [groupes:Groupe,matieres:Matiere]
+	
+	static constraints = {
+	}
+}
+
+
+    
