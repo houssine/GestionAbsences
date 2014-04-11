@@ -1,0 +1,16 @@
+package ga
+
+import Abdououfae.testapp.User
+
+class Etudiant extends User{
+	
+	Date date_naissance
+	static belongsTo = Groupe
+	
+		static hasMany = [professeurs:Professeur, abscences:Abscence, groupes:Groupe]
+	
+	
+	
+		static constraints = {
+			date_naissance(blank: false)
+			
